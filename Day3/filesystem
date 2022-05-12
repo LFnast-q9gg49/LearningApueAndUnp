@@ -1,0 +1,32 @@
+directory and file
+
+1.file stat
+
+stat(path ), lstat(path ), fstat(int directory);
+
+size is just a character, not the real size of file, you should count block*blocksize
+
+2.st_mode
+
+16bit map, used to perform the character of a file
+
+3.UMASK
+
+limit the mode of a file
+
+4.change permission
+
+chmod fchmod
+
+5.sticky bit
+6.FAT and UFS
+7.hard link and symbolic link
+8.utime
+9.create directory and destroy
+10.change work path
+11.analyze directory and read content
+
+
+system data file and infos
+
+progress env
