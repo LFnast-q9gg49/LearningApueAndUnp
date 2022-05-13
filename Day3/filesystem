@@ -2,28 +2,76 @@ directory and file
 
 1.file stat
 
-stat(path ), lstat(path ), fstat(int directory);
+	stat(path ), lstat(path ), fstat(int directory);
 
-size is just a character, not the real size of file, you should count block*blocksize
+	size is just a character, not the real size of file, you should count block*blocksize
 
 2.st_mode
 
-16bit map, used to perform the character of a file
+	16bit map, used to perform the character of a file
 
 3.UMASK
 
-limit the mode of a file
+	limit the mode of a file
 
 4.change permission
 
-chmod fchmod
+	chmod fchmod
 
 5.sticky bit
+
+	right now used int /tmp
+
 6.FAT and UFS
+
+	FAT:static singly linked list
+	UFS: blockgroup:
+
+	---------------------------------
+	|   |       |       |     |     |
+	|des|inodebm|blockbm|inode|block|
+	|   |       |       |     |     |
+	---------------------------------
+	
+	inode is like a struct array.It has many inode struct.inode content stat, 15ptr, sub data.
+	15ptr 12direct, 3 level sub.  if we used 12 full ptrs, we can orient a 12K file
+	(assume each block has 1K). 
+	
+	If the file is bigger. we need 3 sub ptr. each ptr point a 256 ptr. Thus, the first
+	level sub ptr can orient 256K. second level can orient 256 * 256K file. Third level can 
+ 	orient 256 *256 *256 K file.
+
+	Actuall, a block is 4K, not 1K.
+
+
+	It doesn't means UFS has no disadvantages. UFS inode's count is less than block.
+	All inodes are used but some blocks remain.
 7.hard link and symbolic link
+	
+	ln 
+	hard link file shared the same inode with source file, is another kind of directory entry.
+	
+	ln -s
+	symbolic link is like a shortcut. link num will not change, also change the inode num.
+
+
+	link unlink remove rename
+
 8.utime
+
+	can change atime and mtime (access and modify time)
+
 9.create directory and destroy
+
+	rmdir(must be empty) mkdir
+
 10.change work path
+
+	cd —————— chdir function	
+	fchdir(can break chroot)
+	getcwd (current work directory)
+
+
 11.analyze directory and read content
 
 
