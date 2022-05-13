@@ -12,3 +12,30 @@
 	telldir();
 	fseekdir();
 	rewinddir();
+
+
+
+Second Part: System Data File and Infos
+
+1. /etc/passwd
+
+	eg. root:x:0:0:root:/root:/bin/bash
+	
+	username : encrypt : uid : gid : commit : initial dirctory : shell
+
+	getpwuid()   getpwnam()
+
+2. /etc/group
+
+	getgrgid()   getgenam()
+
+3. /etc/shadow
+
+	getspnam()
+	crypt()
+
+4. timestamp
+
+	
+
+5. 
