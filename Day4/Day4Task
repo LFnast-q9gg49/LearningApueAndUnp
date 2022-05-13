@@ -1,0 +1,14 @@
+
+11. Analyze Directory and Read Menu content
+
+	glob():	
+
+
+
+	opendir();
+	closedir();
+	readdir(); // man 3 :thus is a library function
+	seekdir();
+	telldir();
+	fseekdir();
+	rewinddir();
