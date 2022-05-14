@@ -1,0 +1,46 @@
+4.TimeStamp:
+
+						gmtime() /  localtime()
+ 						 <----------------
+	time_t :   struct_tm <----------------> time_t <---------------- time() from kernel
+						 ----------------->
+							  mktime()
+
+
+			   struct_tm -----------------> char *
+						strftime()/ asctime
+
+
+5.Singal Process env
+
+	main	terminal	analyze	env
+	store	library	    jump	resource
+
+	main:
+		int argc, char **argv (in early, main has the third param)
+
+	process terminal:
+		normal: //exit(0) // return from main // _exit or _EXIT // the last thread returns
+				// the last thread use pthread_exit
+				
+
+	           	(1) .exit: status&0377(011111111) (signed char) 
+			   	   so this number should be -128——127
+				(2) .exit and _exit:
+				   user function || main function ——————————————>  kernel	
+													  _exit
+
+
+				   user func || main func ————————>exit ——......——>_exit ——————>kernel
+				                                     need to clean I/O
+													also terminate process
+																	
+	    abnormal: 
+				// use abort // recieve a signal // the last thread was canceled and take
+				   actions
+		
+
+		hook: atexit();
+	command analyze:
+				// getopt() getopt_long();
+						
