@@ -1,0 +1,32 @@
+4. env variable
+ 	export	
+	key = value
+	getenv(); setenv(); putenv();
+                                                       ----------------
+5. space                                               |  argc, argv  |
+	                                                   ----------------
+	32bit —— 4G                                        |    stack     |
+													   ----------------
+ 	pmap											   |              |
+													   |	          |
+													   |              |
+											           ----------------
+  													   |  	 heap     |
+ 													   ----------------
+													   |     BSS      |
+													   ----------------
+													   |  initialised |
+													   ----------------
+													   |	 text     |
+													   ----------------
+
+6. link library
+	dynamic static 
+	dlopen() dlerror() dlclose()
+
+
+7. function jmp
+	setjmp()  longjmp()
+
+8. control
+	getrlimit setrlimit
