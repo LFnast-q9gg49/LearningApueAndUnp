@@ -19,14 +19,24 @@
 	init is the first user mode process.
 	init process is the ancestor process of all process (pid 1)
 	
-	
+	vfork	
 		
 
 <3> destory a process
 	release resource
+	
+	wait() waitpid() wait3 wait4 
+	
+	//  
 
+	
+	(1) block
+	(2) cross partition
+	(3) pool
+	
 <4> exec function group
 
+	execl() execlp() execle() execv() execvp()
 
 <5> user permission and group permission
 
