@@ -1,0 +1,47 @@
+  shell  ——————>  child ——————>  shell
+         fork()	        
+
+  1. why parent and child both can print in same terminal?
+	 Because they are all forked , herited the terminal file descriptor.
+
+  2. user permission and group permission
+	 u+s g+s
+	 UID and GID all are stored triple. 
+	 
+	 real effective and saved(can lose). Permission is aimed at effective id.
+	 u+s means if a user use this file, he would change to root. // Only in this file!!! 
+  	 getuid() geteuid() getgid() getegid()
+	 setgid() setuid() setregid() setregid() seteuid() setegid()
+
+  3. interpreterfile
+	 mechanism not policy
+
+  4. system
+	 system(), /bin/sh -c command.
+	 
+
+  5. process account
+	 acct();
+
+  6. times(): process time
+
+  7. daemon:
+	 session (sid) and terminal 
+	 -------------------------------
+	 |  -----    -----    -----    |------- session/ shell
+	 |  |   |    |   |    |   |<-------- a process group
+	 |  -----    -----    -----    |
+ 	 -------------------------------
+ 	 
+	 a session has many process groups.
+	 at most you can have one foreground process
+	 foreground process/  background process
+
+	 setsid() 
+ 	 daemon is an orphan process
+	 getpgrp()
+
+	 how to start process only once : .pid lock file or edit /etc/rc.d/rc.local
+  8. systemlog
+	 /var/log
+	 syslogd 
