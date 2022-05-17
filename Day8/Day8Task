@@ -1,0 +1,30 @@
+/*******************  concurrent  *******************/
+
+1. Signal
+	(1) what is signal?
+		
+		signal is a kind of software interrupt.	————————
+		the reference to signal is reliant to interrupt
+
+	(2) signal()
+		kill -l 
+		id : 34-64 real time signal
+		信号会打断阻塞的系统调用
+	(3) not reliable signal
+
+	(4) reentrant funciton（可重入函数）
+
+	(5) procedure for signal
+
+	(6) alarm // kill // raise // pause // abort // system // sleep
+
+	(7) signal album
+
+	(8) 信号屏蔽字和pending集
+
+	(9) sigsuspend  //  setitimer  //  sigaction
+
+
+2. MultiThreat
+
+
