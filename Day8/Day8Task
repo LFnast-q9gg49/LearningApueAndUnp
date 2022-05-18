@@ -36,10 +36,15 @@
 		
 		kill(pid, sig) :send a signal to process
 		raise(sig):send a signal to a calling process or thread
+		
 		alarm(); SIG_ALARM, alarm
-		pause():和alarm配对，一般替代while. 
+		pause():和alarm配对，while.
+		
+		setitimer()	 
 
-	(7) signal album
+	(7) sigal set
+		sigemptyset() sigfillset() sigaddset() sigdelset() sigismember()?
+		sigset_t
 
 	(8) 信号屏蔽字和pending集
 
