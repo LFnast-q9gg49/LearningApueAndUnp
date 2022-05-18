@@ -13,10 +13,31 @@
 	(3) not reliable signal
 
 	(4) reentrant funciton（可重入函数）
+		
+		To solve the problem that the first signal 
+		haven't finished and the second signal comes
 
+
+		all system call are reentrant, some lib functions are reentrant
+
+		_r function  eg: rand() rand_r()
+		
 	(5) procedure for signal
 
+		内核为进程维护至少两个位图 —— mask和pending, 一般均为32位，
+		mask表示信号状态，pending记录收到的信号
+		mask : 111---1  pending: 000---0  默认
+		当进程恢复现场时，也即kernel——>user，mask&pending， 若为0，则未收到信号。
+		因此，如果没有中断机制，进程都不知道自己会收到信号。
+		收到信号时pending变为1，调度时将mask 变为0， pending也为0， 将恢复现场的addr换为sigh		andler.执行完后，回到内核，恢复addr为原函数，等待调度，并将mask换为1。若收到多个标准		信号，则没有严格执行顺序。SIG_IGN即为将mask置为0。
+
+		
 	(6) alarm // kill // raise // pause // abort // system // sleep
+		
+		kill(pid, sig) :send a signal to process
+		raise(sig):send a signal to a calling process or thread
+		alarm(); SIG_ALARM, alarm
+		pause():和alarm配对，一般替代while. 
 
 	(7) signal album
 
