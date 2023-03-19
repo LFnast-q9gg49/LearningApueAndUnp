@@ -1,7 +1,0 @@
-dcb-lsp
-
-d:dirctoey c:character  b :block  -:regular  l: particular in symbolic link file  s: socket
-
-p : particular named pipe 
-
-16bit —————— 9bit UGO + u+s + g+s + stickybit
