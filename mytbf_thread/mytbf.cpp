@@ -1,7 +1,5 @@
 #include "mytbf.h"
 
-static struct sigaction alrm_save;
-
 static struct mytbf_st *job[MYTBF_MAX]; // mutex
 
 static pthread_mutex_t mut_job = PTHREAD_MUTEX_INITIALIZER;
@@ -9,14 +7,13 @@ static pthread_once_t once_control = PTHREAD_ONCE_INIT;
 
 static pthread_t tid_alrm;
 
-static int inited = 0;
-
 struct mytbf_st{
     int cps;
     int burst;
     int token;
     int pos;
     pthread_mutex_t mut;
+    pthread_cond_t cond;
 };
 
 static int get_free_pos_unlock(){
@@ -97,8 +94,6 @@ static void module_load(){
 
     auto thr_alrm = [] (void *) -> void *{
 
-
-
         while(true) {
             pthread_mutex_lock(&mut_job);
             for (auto &i: job) {
@@ -108,6 +103,7 @@ static void module_load(){
                     if (i->token > i->burst) {
                         i->token = i->burst;
                     }
+                    pthread_cond_broadcast(&i->cond);
                     pthread_mutex_unlock(&i->mut);
                 }
             }
@@ -115,7 +111,6 @@ static void module_load(){
             sleep(1);
         }
     };
-
 
     int err;
 
@@ -147,6 +142,7 @@ mytbf_t *mytbf_init(int cps, int burst){
     me -> burst 	= burst;
     me -> pos 	    = pos;
     pthread_mutex_init(&me->mut, nullptr);
+    pthread_cond_init(&me->cond, nullptr);
 
     pthread_mutex_lock(&mut_job);
     pos = get_free_pos_unlock();
@@ -164,7 +160,7 @@ mytbf_t *mytbf_init(int cps, int burst){
 
 int mytbf_fetchtoken(mytbf_t *ptr, int size){
     int tmp;
-    auto *me = (mytbf_st *)ptr;
+    auto *me = (struct mytbf_st *)ptr;
 
     if (size <= 0){
         return -EINVAL;
@@ -172,9 +168,10 @@ int mytbf_fetchtoken(mytbf_t *ptr, int size){
 
     pthread_mutex_lock(&me->mut);
     while (me -> token <= 0){
-        pthread_mutex_unlock(&me->mut);
-        sched_yield();
-        pthread_mutex_lock(&me->mut);
+        pthread_cond_wait(&me->cond, &me->mut); // unlock and wait for signal or broadcast
+//        pthread_mutex_unlock(&me->mut);
+//        sched_yield();
+//        pthread_mutex_lock(&me->mut);
     }
 
     tmp = min(me -> token, size);
@@ -185,7 +182,7 @@ int mytbf_fetchtoken(mytbf_t *ptr, int size){
 
 int mytbf_returntoken(mytbf_t *ptr, int size){
 
-    auto *me = (mytbf_st *)ptr;
+    auto *me = (struct mytbf_st *)ptr;
 
     if (size <= 0){
         return -EINVAL;
@@ -197,18 +194,20 @@ int mytbf_returntoken(mytbf_t *ptr, int size){
     if (me->token > me->burst){
         me->token = me->burst;
     }
+    pthread_cond_broadcast(&me->cond);
     pthread_mutex_unlock(&me->mut);
 
     return size;
 }
 
 int mytbf_destroy(mytbf_t *ptr){
-    auto *me = (mytbf_st *)ptr;
+    auto *me = (struct mytbf_st *)ptr;
 
     pthread_mutex_lock(&mut_job);
     job[me->pos] = nullptr;
     pthread_mutex_unlock(&mut_job);
     pthread_mutex_destroy(&me->mut);
+    pthread_cond_destroy(&me->cond);
     free(ptr);
 
     return 0;
