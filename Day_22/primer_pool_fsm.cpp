@@ -1,4 +1,4 @@
-// use 5 pthreads to calculate primes below 100000
+// use 5 pthreads to calculate primes below 1000000
 // and write them to the file
 // just an exercise of FSM
 
@@ -175,7 +175,7 @@ int main(int argc, char **argv){
             pthread_cond_wait(&cond, &mut);
         }
         task = i; // push num to task
-        fprintf(stdout, "%d calc start\n", task);
+        /* fprintf(stdout, "%d calc start\n", task);*/
         pthread_mutex_unlock(&mut);
         pthread_cond_broadcast(&cond); // awake all threads
     }
@@ -189,7 +189,7 @@ int main(int argc, char **argv){
     pthread_mutex_unlock(&mut);
     pthread_cond_broadcast(&cond); // awake all threads
 
-    fprintf(stdout, "calc end\n");
+    /*fprintf(stdout, "calc end\n");*/
 
     // recycle pthread and delete arg
     for (i = 0; i < pthread_max; i++){
