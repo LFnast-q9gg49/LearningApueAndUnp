@@ -11,6 +11,7 @@
 int main(int argc, char **argv) {
     int sd;
     int size = sizeof(struct msg_st) + strlen(argv[2]);
+    fprintf(stdout, "%d\n", size);
     auto *message_p = (struct msg_st*)malloc(size);
     if (message_p == nullptr){
         perror("malloc");
