@@ -1,20 +1,19 @@
-// use http1.0
-
 #include <cstdio>
 #include <cstdlib>
 #include <sys/socket.h>
+#include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <ctime>
 #include <cerrno>
 #include <cstring>
-
-const int bufsize = 1024;
+#include "proto.h"
 
 int main(int argc, char **argv){
     FILE *fp;
-    int sd, get;
+    int sd;
+    long long stamp;
     struct sockaddr_in raddr{};
-    char rbuf[bufsize];
 
     if (argc < 2){
         fprintf(stderr, "Usage : ./client ip\n");
@@ -28,7 +27,7 @@ int main(int argc, char **argv){
 
     // bind
     raddr.sin_family = AF_INET;
-    raddr.sin_port = htons(80);
+    raddr.sin_port = htons(server_port);
     inet_pton(AF_INET, argv[1], &raddr.sin_addr);
 
     if (connect(sd, (struct sockaddr *)&raddr, sizeof(raddr)) < 0){
@@ -43,16 +42,11 @@ int main(int argc, char **argv){
         exit(1);
     }
 
-    fprintf(fp, "GET /1.png\r\n\r\n");
-    fflush(fp);
-
-    while(true){
-        get = fread(rbuf, 1, bufsize, fp);
-        if (get <= 0){
-		break;
-	}
-	fwrite(rbuf, 1, get, stdout);
-    	
+    if (fscanf(fp, fmt_stamp, &stamp) < 1){
+        fprintf(stderr, "Bad Format\n");
+        exit(1);
+    } else{
+        fprintf(stdout, "stamp = %lld\n", stamp);
     }
 
     fclose(fp);
@@ -62,4 +56,3 @@ int main(int argc, char **argv){
 
     exit(0);
 }
-
