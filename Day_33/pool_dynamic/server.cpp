@@ -67,8 +67,8 @@ static void server_job(int pos) {
         stamp = time(nullptr);
         len = snprintf(linebuf, bufsize, fmt_stamp, stamp);
         send(client_sd, linebuf, len, 0);
-        fprintf(stdout, "%s", linebuf);
-        sleep(5); // just test
+        sleep(5); // stimulate the real process time
+	close(client_sd); 
     }
 }
 
