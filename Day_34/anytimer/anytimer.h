@@ -20,10 +20,17 @@ public:
      *        == -EINVAL;
      * */
     static int at_waitjob(int id);
-    static int at_pausejob(int id);
-
-private:
-
+    /*
+     * return == 0 success;
+     *        == -EINVAL;
+     * */
+    static int at_repeatjob(int sec, at_jobfunc_t *jobp, void *arg);
+    /*
+     * return >= 0 success;
+     *        == -EINVAL
+     *        == -EBUSY // job is a cycle job
+     *        == -ECANCELED // job is canceled
+     * */
 };
 
 
