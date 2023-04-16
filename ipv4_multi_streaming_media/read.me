@@ -1,0 +1,21 @@
+	Server-----------------------------------Client
+	  |		    			 |
+	  |					 |
+	  |-------------  socket  --------->  parent
+	  |					  ---------> child
+	  |				             fork		(exec mpeg123)
+	  |					     pipe?
+	  |
+	  |
+      	  |-------thread channel
+	  |
+	  |-------thread list(per 1s)
+	  |
+	  |-------media-lib
+	  |	   1.mp3
+	  |	   2.mp3
+		    ...
+		    ...
+
+
+
